@@ -1,5 +1,5 @@
 'use client'
-import axios  from 'axios';
+import axios from 'axios';
 import { productsDummyData, userDummyData } from "@/assets/assets";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,16 @@ export const AppContextProvider = (props) => {
     const [cartItems, setCartItems] = useState({})
 
     const fetchProductData = async () => {
-        setProducts(productsDummyData)
+        try {
+            const { data } = await axios.get('/api/product/list')
+            if (data.success) {
+                setProducts(data.products)
+            } else {
+                toast.error(data.message)
+            }
+        } catch (error) {
+            toast.error(error.message)
+        }
     }
 
     const fetchUserData = async () => {
@@ -37,7 +46,7 @@ export const AppContextProvider = (props) => {
 
 
             const token = await getToken();
-            
+
             const { data } = await axios.get('/api/user/data', {
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -68,6 +77,20 @@ export const AppContextProvider = (props) => {
             cartData[itemId] = 1;
         }
         setCartItems(cartData);
+        if (user) {
+            try {
+                const token = await getToken();
+                await axios.post('/api/cart/update', { cartData }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                toast.success('Added to cart')
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
+
 
     }
 
@@ -80,6 +103,19 @@ export const AppContextProvider = (props) => {
             cartData[itemId] = quantity;
         }
         setCartItems(cartData)
+        if (user) {
+            try {
+                const token = await getToken();
+                await axios.post('/api/cart/update', { cartData }, {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                })
+                toast.success('Cart updated')
+            } catch (error) {
+                toast.error(error.message)
+            }
+        }
 
     }
 
