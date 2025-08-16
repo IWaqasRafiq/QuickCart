@@ -9,16 +9,22 @@ export async function POST(request) {
     const { userId } = getAuth(request);
     const { address, items } = await request.json();
 
-    if (address || items.length === 0) {
+    if (!address || !items || items.length === 0) {
       return NextResponse.json(
         { success: false, message: "Invalid Request" },
         { status: 400 }
       );
     }
-    const amount = items.reduce(async (acc, item) => {
-      const product = await Product.findById(item.product);
-      return acc + product.offerPrice * item.quantity;
-    }, 0);
+
+    const productTotals = await Promise.all(
+      items.map(async (item) => {
+        const product = await Product.findById(item.product);
+        if (!product) throw new Error(`Product not found: ${item.product}`);
+        return Number(product.offerPrice) * item.quantity;
+      })
+    );
+
+    const amount = productTotals.reduce((sum, val) => sum + val, 0);
 
     await inngest.send({
       name: "order/created",
@@ -32,7 +38,7 @@ export async function POST(request) {
     });
 
     const user = await User.findById(userId);
-    user.carItems = {};
+    user.cartItems = {};
     await user.save();
 
     return NextResponse.json({ success: true, message: "Order Placed" });
