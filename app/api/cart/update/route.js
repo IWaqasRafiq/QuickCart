@@ -18,7 +18,7 @@ export async function POST(request) {
     await connectToDB();
 
     const user = await User.findOneAndUpdate(
-      { _id: userId }, // ✅ match by Clerk's userId
+      { _id: userId }, 
       { $set: { cartItems: cartData } },
       { upsert: true, new: true }
     );
