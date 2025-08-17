@@ -1,30 +1,20 @@
 import mongoose from "mongoose";
 
-let cached = global.mongoose;
+const MONGODB_URI = `${process.env.MONGODB_URI}/quickcart`;
 
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
+if (!MONGODB_URI) throw new Error("Please define MONGODB_URI");
 
-const connectToDB = async () => {
-  if (cached.conn) {
-    return cached.conn;
-  }
+let cached = global.mongoose || { conn: null, promise: null };
+
+export default async function connectToDB() {
+  if (cached.conn) return cached.conn;
 
   if (!cached.promise) {
-    const opts = {
-      bufferCommands: false,
-    };
-
-    cached.promise = mongoose
-      .connect(`${process.env.MONGODB_URI}/quickcart`, opts)
-      .then((mongoose) => {
-        return mongoose;
-      });
+    cached.promise = mongoose.connect(MONGODB_URI, { bufferCommands: false })
+      .then((mongoose) => mongoose);
   }
 
   cached.conn = await cached.promise;
+  global.mongoose = cached; // 🔑 ensures persistence
   return cached.conn;
-};
-
-export default connectToDB;
+}
