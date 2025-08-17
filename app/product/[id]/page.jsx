@@ -81,13 +81,13 @@ const Product = () => {
                         </div>
                         <p>(4.5)</p>
                     </div>
-                    <p className="text-gray-600 mt-3">
+                    <p className="text-gray-600 mt-3 whitespace-pre-line">
                         {productData.description}
                     </p>
                     <p className="text-3xl font-medium mt-6">
-                        ${productData.offerPrice}
+                        PKR-{productData.offerPrice.toLocaleString("ur-PK")}
                         <span className="text-base font-normal text-gray-800/60 line-through ml-2">
-                            ${productData.price}
+                            PKR-{productData.price.toLocaleString("ur-PK")}
                         </span>
                     </p>
                     <hr className="bg-gray-600 my-6" />
@@ -96,11 +96,11 @@ const Product = () => {
                             <tbody>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Brand</td>
-                                    <td className="text-gray-800/50 ">Generic</td>
+                                    <td className="text-gray-800/50 ">KHAADI</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Color</td>
-                                    <td className="text-gray-800/50 ">Multi</td>
+                                    <td className="text-gray-800/50 ">Cream</td>
                                 </tr>
                                 <tr>
                                     <td className="text-gray-600 font-medium">Category</td>

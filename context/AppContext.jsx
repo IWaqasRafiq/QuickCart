@@ -69,6 +69,11 @@ export const AppContextProvider = (props) => {
 
     const addToCart = async (itemId) => {
 
+        if (!user) {
+            toast.error("Login first to add items in cart");
+            return;
+        }
+
         let cartData = structuredClone(cartItems);
         if (cartData[itemId]) {
             cartData[itemId] += 1;

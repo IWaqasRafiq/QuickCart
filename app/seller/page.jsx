@@ -79,7 +79,7 @@ const AddProduct = () => {
                   key={index}
                   className="max-w-24 cursor-pointer"
                   src={files[index] ? URL.createObjectURL(files[index]) : assets.upload_area}
-                  alt=""
+                  alt="Product Image"
                   width={100}
                   height={100}
                 />
@@ -130,13 +130,13 @@ const AddProduct = () => {
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
             >
-              <option value="Earphone">Earphone</option>
-              <option value="Headphone">Headphone</option>
-              <option value="Watch">Watch</option>
-              <option value="Smartphone">Smartphone</option>
-              <option value="Laptop">Laptop</option>
-              <option value="Camera">Camera</option>
-              <option value="Accessories">Accessories</option>
+              <option value="Earphone">Kurta</option>
+              <option value="Headphone">Lehnga</option>
+              <option value="Watch">Peshwas</option>
+              <option value="Smartphone">Angrakha</option>
+              <option value="Laptop">Kaftan</option>
+              <option value="Camera">Peplum</option>
+              <option value="Accessories">Sari</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 w-32">

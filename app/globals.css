@@ -17,3 +17,7 @@
 ::-webkit-scrollbar {
   display: none;
 }
+
+.whitespace-pre-line {
+  white-space: pre-line !important;
+}

@@ -5,21 +5,21 @@ import Image from "next/image";
 const products = [
   {
     id: 1,
-    image: assets.girl_with_headphone_image,
-    title: "Unparalleled Sound",
-    description: "Experience crystal-clear audio with premium headphones.",
+    image: assets.FeatureImage02,
+    title: "Elegant Stitches",
+    description: "Delicate embroidery weaves timeless beauty into every graceful outfit.",
   },
   {
     id: 2,
-    image: assets.girl_with_earphone_image,
-    title: "Stay Connected",
-    description: "Compact and stylish earphones for every occasion.",
+    image: assets.FeatureImage01,
+    title: "Grace Thread",
+    description: "Intricate handwork meets modern style for women who shine.",
   },
   {
     id: 3,
-    image: assets.boy_with_laptop_image,
-    title: "Power in Every Pixel",
-    description: "Shop the latest laptops for work, gaming, and more.",
+    image: assets.FeatureImage03,
+    title: "Charm Woven",
+    description: "Exquisite embroidered details create fashion that feels truly special.",
   },
 ];
 
@@ -37,11 +37,11 @@ const FeaturedProduct = () => {
             <Image
               src={image}
               alt={title}
-              className="group-hover:brightness-75 transition duration-300 w-full h-auto object-cover"
+              className="group-hover:brightness-75 rounded-lg transition duration-300 w-full h-auto object-cover"
             />
             <div className="group-hover:-translate-y-4 transition duration-300 absolute bottom-8 left-8 text-white space-y-2">
               <p className="font-medium text-xl lg:text-2xl">{title}</p>
-              <p className="text-sm lg:text-base leading-5 max-w-60">
+              <p className="text-sm lg:text-base leading-5 text-lime-50 max-w-60">
                 {description}
               </p>
               <button className="flex items-center gap-1.5 bg-orange-600 px-4 py-2 rounded">

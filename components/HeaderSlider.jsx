@@ -6,27 +6,27 @@ const HeaderSlider = () => {
   const sliderData = [
     {
       id: 1,
-      title: "Experience Pure Sound - Your Perfect Headphones Awaits!",
+      title: "Discover timeless trends designed to inspire your style.",
       offer: "Limited Time Offer 30% Off",
       buttonText1: "Buy now",
       buttonText2: "Find more",
-      imgSrc: assets.header_headphone_image,
+      imgSrc: assets.SliderImage1,
     },
     {
       id: 2,
-      title: "Next-Level Gaming Starts Here - Discover PlayStation 5 Today!",
+      title: "Celebrate every moment with outfits made for you.",
       offer: "Hurry up only few lefts!",
       buttonText1: "Shop Now",
       buttonText2: "Explore Deals",
-      imgSrc: assets.header_playstation_image,
+      imgSrc: assets.SliderImage2,
     },
     {
       id: 3,
-      title: "Power Meets Elegance - Apple MacBook Pro is Here for you!",
+      title: "Unmissable deals on styles you truly deserve.",
       offer: "Exclusive Deal 40% Off",
       buttonText1: "Order Now",
       buttonText2: "Learn More",
-      imgSrc: assets.header_macbook_image,
+      imgSrc: assets.SliderImage3,
     },
   ];
 
@@ -54,9 +54,9 @@ const HeaderSlider = () => {
         {sliderData.map((slide, index) => (
           <div
             key={slide.id}
-            className="flex flex-col-reverse md:flex-row items-center justify-between bg-[#E6E9F2] py-8 md:px-14 px-5 mt-6 rounded-xl min-w-full"
+            className="flex flex-col-reverse  md:flex-row items-center justify-between bg-[#e8f5bc] mt-6 rounded-xl min-w-full"
           >
-            <div className="md:pl-8 mt-10 md:mt-0">
+            <div className="md:pl-8 mt-10  md:mt-0">
               <p className="md:text-base text-orange-600 pb-1">{slide.offer}</p>
               <h1 className="max-w-lg md:text-[40px] md:leading-[48px] text-2xl font-semibold">
                 {slide.title}
@@ -71,9 +71,9 @@ const HeaderSlider = () => {
                 </button>
               </div>
             </div>
-            <div className="flex items-center flex-1 justify-center">
+            <div className="flex items-center object-cover  flex-1 justify-center">
               <Image
-                className="md:w-72 w-48"
+                className="md:w-100 w-100 rounded-e-xl"
                 src={slide.imgSrc}
                 alt={`Slide ${index + 1}`}
               />
@@ -87,9 +87,8 @@ const HeaderSlider = () => {
           <div
             key={index}
             onClick={() => handleSlideChange(index)}
-            className={`h-2 w-2 rounded-full cursor-pointer ${
-              currentSlide === index ? "bg-orange-600" : "bg-gray-500/30"
-            }`}
+            className={`h-2 w-2 rounded-full cursor-pointer ${currentSlide === index ? "bg-orange-600" : "bg-gray-500/30"
+              }`}
           ></div>
         ))}
       </div>
