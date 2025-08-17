@@ -9,6 +9,10 @@ import { useParams } from "next/navigation";
 import Loading from "@/components/Loading";
 import { useAppContext } from "@/context/AppContext";
 import React from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/navigation";
 
 const Product = () => {
 
@@ -32,7 +36,24 @@ const Product = () => {
         <Navbar />
         <div className="px-6 md:px-16 lg:px-32 pt-14 space-y-10">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
-                <div className="px-5 lg:px-16 xl:px-20">
+                <div className="block md:hidden">
+                    <Swiper modules={[Navigation]}
+                        navigation spaceBetween={10} slidesPerView={1}>
+                        {productData.image.map((image, index) => (
+                            <SwiperSlide key={index}>
+                                <Image
+                                    src={image}
+                                    alt={`product-${index}`}
+                                    className="w-full h-auto object-cover rounded-lg"
+                                    width={1280}
+                                    height={720}
+                                />
+                            </SwiperSlide>
+                        ))}
+                    </Swiper>
+                </div>
+
+                <div className="hidden md:block px-5 lg:px-16 xl:px-20">
                     <div className="rounded-lg overflow-hidden bg-gray-500/10 mb-4">
                         <Image
                             src={mainImage || productData.image[0]}
