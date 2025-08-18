@@ -28,18 +28,18 @@ const Navbar = () => {
           Shop
         </Link>
         <Link href="/" className="hover:text-gray-900 transition">
-          About Us
+          About
         </Link>
         <Link href="/" className="hover:text-gray-900 transition">
           Contact
         </Link>
 
-        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Seller Dashboard</button>}
+        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Dashboard</button>}
 
       </div>
 
+        <SearchBar className="max-w-md"></SearchBar>
       <ul className="hidden md:flex items-center gap-4 ">
-        <SearchBar />
         {user
           ? <>
             <UserButton>
@@ -59,7 +59,7 @@ const Navbar = () => {
       </ul>
 
       <div className="flex items-center md:hidden gap-3">
-        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Seller Dashboard</button>}
+        {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Dashboard</button>}
         {user
           ? <>
             <UserButton>
