@@ -27,11 +27,6 @@ const Banner = () => {
         src={assets.BannerImage02}
         alt="md_controller_image"
       />
-      <Image
-        className="md:hidden"
-        src={assets.sm_controller_image}
-        alt="sm_controller_image"
-      />
     </div>
   );
 };

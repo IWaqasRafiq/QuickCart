@@ -21,3 +21,7 @@
 .whitespace-pre-line {
   white-space: pre-line !important;
 }
+.searchBar{
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+}
