@@ -5,6 +5,7 @@ import Link from "next/link"
 import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { useClerk, UserButton } from "@clerk/nextjs";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
 
@@ -38,7 +39,7 @@ const Navbar = () => {
       </div>
 
       <ul className="hidden md:flex items-center gap-4 ">
-        <Image className="w-4 h-4" src={assets.search_icon} alt="search icon" />
+        <SearchBar />
         {user
           ? <>
             <UserButton>

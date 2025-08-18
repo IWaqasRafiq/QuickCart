@@ -1,21 +1,28 @@
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema({
-    userId: {
-        type:String,
-        required: true,
-        ref: 'User'
-    },
-    price: {type: Number, required: true},
-    name : {type: String, required: true},
-    description: {type: String, required: true},
-    category: {type: String, required: true},
-    offerPrice: {type: Number, required: true},
-    category: {type: String, required: true},
-    image:{type: Array, required: true},
-    date: {type: Number, required: true}
-})
+  userId: {
+    type: String,
+    required: true,
+    ref: "User",
+    index: true,
+  },
+  price: { type: Number, required: true },
+  name: { type: String, required: true, index: true },
+  description: { type: String, required: true, index: true },
+  offerPrice: { type: Number, required: true },
+  category: { type: String, required: true, index: true },
+  image: { type: Array, required: true },
+  date: { type: Number, required: true },
+});
 
-const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
+productSchema.index({
+  name: "text",
+  description: "text",
+  category: "text",
+});
+
+const Product =
+  mongoose.models.Product || mongoose.model("Product", productSchema);
 
 export default Product;
