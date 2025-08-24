@@ -8,6 +8,19 @@ import Footer from "@/components/seller/Footer";
 import Loading from "@/components/Loading";
 import toast from 'react-hot-toast';
 
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    // If more than 2 already showing, remove the oldest
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
 const ProductList = () => {
 
   const { router, getToken, user } = useAppContext()
@@ -28,10 +41,10 @@ const ProductList = () => {
         setProducts(data.products);
         setLoading(false);
       } else {
-        toast.error(data.message)
+        limitedToast(data.message, "error");
       }
     } catch (error) {
-      toast.error(error.message)
+      limitedToast(error.message, "error");
     }
 
   }
@@ -46,13 +59,13 @@ const ProductList = () => {
       });
 
       if (data.success) {
-        toast.success(data.message);
+        limitedToast(data.message, "success");
         setProducts(products.filter((product) => product._id !== id));
       } else {
-        toast.error(data.message);
+        limitedToast(data.message, "error");
       }
     } catch (error) {
-      toast.error(error.message);
+      limitedToast(error.message, "error");
     }
   };
 

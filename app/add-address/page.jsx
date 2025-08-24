@@ -8,6 +8,18 @@ import { useAppContext } from "@/context/AppContext";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
 const AddAddress = () => {
 
     const { getToken, router } = useAppContext();
@@ -32,14 +44,14 @@ const AddAddress = () => {
                 }
             })
             if (data.success) {
-                toast.success(data.message);
+                limitedToast(data.message, "success");
                 router.push('/cart')
             } else {
-                toast.error(data.message);
+                limitedToast(data.message, "error");
             }
 
         } catch (error) {
-            toast.error(error.message);
+            limitedToast(error.message, "error");
 
         }
     }

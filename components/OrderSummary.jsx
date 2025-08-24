@@ -3,9 +3,22 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    // If more than 2 already showing, remove the oldest
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
 const OrderSummary = () => {
 
-  const { currency, router, getCartCount, getCartAmount, getToken, user, cartItems, setCartItems } = useAppContext()
+  const {router, getCartCount, getCartAmount, getToken, user, cartItems, setCartItems } = useAppContext()
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
@@ -28,11 +41,11 @@ const OrderSummary = () => {
           setSelectedAddress(data.addresses[0])
         }
       } else {
-        toast.error(data.message );
+        limitedToast(data.message, "error");
       }
 
     } catch (error) {
-      toast.error( error.message );
+      limitedToast(error.message, "error");
     }
   }
 
@@ -56,7 +69,7 @@ const OrderSummary = () => {
       cartItemsArray = cartItemsArray.filter((item) => item.quantity > 0);
 
       if (cartItemsArray.length === 0) {
-        return toast.error("Cart is empty");
+        return limitedToast("Cart is empty", "error");
       }
 
       const token = await getToken();
@@ -75,15 +88,15 @@ const OrderSummary = () => {
       );
 
       if (data.success) {
-        toast.success(data.message)
-        setCartItems({})
-        router.push("/order-placed")
+        limitedToast(data.message, "success");
+        setCartItems({});
+        router.push("/order-placed");
       } else {
-        toast.error(data.message)
+        limitedToast(data.message, "error");
       }
 
     } catch (error) {
-      toast.error(error.message)
+      limitedToast(error.message, "error");
 
     }
   }
@@ -166,7 +179,7 @@ const OrderSummary = () => {
         <div className="space-y-4">
           <div className="flex justify-between text-base font-medium">
             <p className="uppercase text-gray-600">Items {getCartCount()}</p>
-            <p className="text-gray-800">{currency}{getCartAmount()}</p>
+            <p className="text-gray-800">{getCartAmount()}</p>
           </div>
           <div className="flex justify-between">
             <p className="text-gray-600">Shipping Fee</p>
@@ -174,11 +187,11 @@ const OrderSummary = () => {
           </div>
           <div className="flex justify-between">
             <p className="text-gray-600">Tax (2%)</p>
-            <p className="font-medium text-gray-800">{currency}{Math.floor(getCartAmount() * 0.02)}</p>
+            <p className="font-medium text-gray-800">{Math.floor(getCartAmount() * 0.02)}</p>
           </div>
           <div className="flex justify-between text-lg md:text-xl font-medium border-t pt-3">
             <p>Total</p>
-            <p>{currency}{getCartAmount() + Math.floor(getCartAmount() * 0.02)}</p>
+            <p>{getCartAmount() + Math.floor(getCartAmount() * 0.02)}</p>
           </div>
         </div>
       </div>

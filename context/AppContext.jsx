@@ -1,6 +1,5 @@
 'use client'
 import axios from 'axios';
-import { productsDummyData, userDummyData } from "@/assets/assets";
 import { useAuth, useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import react, { createContext, useContext, useEffect, useState } from "react";
@@ -12,9 +11,23 @@ export const useAppContext = () => {
     return useContext(AppContext)
 }
 
+// --- Toast Manager ---
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    // If more than 2 already showing, remove the oldest
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
+
 export const AppContextProvider = (props) => {
 
-    const currency = process.env.NEXT_PUBLIC_CURRENCY
     const router = useRouter()
 
     const { user } = useUser();
@@ -25,16 +38,20 @@ export const AppContextProvider = (props) => {
     const [isSeller, setIsSeller] = useState(false)
     const [cartItems, setCartItems] = useState({})
 
+
+
+
+
     const fetchProductData = async () => {
         try {
             const { data } = await axios.get('/api/product/list')
             if (data.success) {
                 setProducts(data.products)
             } else {
-                toast.error(data.message)
+                limitedToast(data.message, "error")
             }
         } catch (error) {
-            toast.error(error.message)
+            limitedToast(error.message, 'error')
         }
     }
 
@@ -57,11 +74,11 @@ export const AppContextProvider = (props) => {
                 setUserData(data.user)
                 setCartItems(data.user.cartItems)
             } else {
-                toast.error(data.message)
+                limitedToast(data.message, "error")
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.message)
+            limitedToast(error.message, "error")
 
         }
 
@@ -70,7 +87,7 @@ export const AppContextProvider = (props) => {
     const addToCart = async (itemId) => {
 
         if (!user) {
-            toast.error("Login first to add items in cart");
+            limitedToast("Login first to add items in cart", "error");
             return;
         }
 
@@ -90,9 +107,10 @@ export const AppContextProvider = (props) => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                toast.success('Added to cart')
+                limitedToast('Added to cart', 'success')
+
             } catch (error) {
-                toast.error(error.message)
+                limitedToast(error.message, 'error')
             }
         }
 
@@ -116,9 +134,9 @@ export const AppContextProvider = (props) => {
                         Authorization: `Bearer ${token}`
                     }
                 })
-                toast.success('Cart updated')
+                limitedToast('Cart updated', 'success')
             } catch (error) {
-                toast.error(error.message)
+                limitedToast(error.message, 'error')
             }
         }
 
@@ -136,14 +154,21 @@ export const AppContextProvider = (props) => {
 
     const getCartAmount = () => {
         let totalAmount = 0;
-        for (const items in cartItems) {
-            let itemInfo = products.find((product) => product._id === items);
-            if (cartItems[items] > 0) {
-                totalAmount += itemInfo.offerPrice * cartItems[items];
+
+        for (const itemId in cartItems) {
+            // find the product by id
+            const itemInfo = products.find((product) => product._id === itemId);
+
+            // check product exists and cart quantity > 0
+            if (itemInfo && cartItems[itemId] > 0) {
+                totalAmount += (itemInfo.offerPrice || 0) * cartItems[itemId];
+            } else if (!itemInfo) {
+                console.warn("⚠️ Product not found for ID:", itemId);
             }
         }
+
         return Math.floor(totalAmount * 100) / 100;
-    }
+    };
 
     useEffect(() => {
         fetchProductData()
@@ -158,7 +183,7 @@ export const AppContextProvider = (props) => {
 
     const value = {
         user, getToken,
-        currency, router,
+        router,
         isSeller, setIsSeller,
         userData, fetchUserData,
         products, fetchProductData,

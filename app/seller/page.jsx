@@ -6,6 +6,19 @@ import Image from "next/image";
 import { useAppContext } from '@/context/AppContext';
 import toast from 'react-hot-toast';
 
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    // If more than 2 already showing, remove the oldest
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
 const AddProduct = () => {
 
   const { getToken } = useAppContext();
@@ -50,7 +63,7 @@ const AddProduct = () => {
 
       });
       if (data.success) {
-        toast.success(data.message)
+        limitedToast(data.message, "success");
         setFiles([]);
         setName('');
         setDescription('');
@@ -62,10 +75,10 @@ const AddProduct = () => {
         setSize('');
         setModel('');
       } else {
-        toast.error(data.message)
+        limitedToast(data.message, "error");
       }
     } catch (error) {
-      toast.error(error.message)
+      limitedToast(error.message, "error");
 
     }
 

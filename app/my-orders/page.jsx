@@ -9,9 +9,22 @@ import Loading from "@/components/Loading";
 import axios from "axios";
 import toast from "react-hot-toast";
 
+let activeToasts = [];
+
+const limitedToast = (message, type = "success") => {
+    // If more than 2 already showing, remove the oldest
+    if (activeToasts.length >= 2) {
+        const oldest = activeToasts.shift();
+        toast.dismiss(oldest);
+    }
+
+    const id = toast[type](message, { duration: 3000 });
+    activeToasts.push(id);
+};
+
 const MyOrders = () => {
 
-    const { currency, getToken, user } = useAppContext();
+    const { getToken, user } = useAppContext();
 
     const [orders, setOrders] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -31,11 +44,11 @@ const MyOrders = () => {
                 setOrders(data.orders.reverse());
                 setLoading(false);
             } else {
-                toast.error(data.message);
-            } 
+                limitedToast(data.message, "error");
+            }
 
         } catch (error) {
-            toast.error(error.message);
+            limitedToast(error.message, "error");
         }
     }
 
@@ -80,7 +93,7 @@ const MyOrders = () => {
                                         <span>{order.address.phoneNumber}</span>
                                     </p>
                                 </div>
-                                <p className="font-medium my-auto">{currency}{order.amount}</p>
+                                <p className="font-medium my-auto">{order.amount}</p>
                                 <div>
                                     <p className="flex flex-col">
                                         <span>Method : COD</span>
