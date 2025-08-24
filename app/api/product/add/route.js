@@ -36,6 +36,10 @@ export async function POST(request) {
     const price = formData.get("price");
     const offerPrice = formData.get("offerPrice");
     const category = formData.get("category");
+    const brand = formData.get("brand");
+    const model = formData.get("model");
+    const color = formData.get("color");
+    const size = formData.get("size");
 
     const files = formData.getAll("image");
 
@@ -75,6 +79,10 @@ export async function POST(request) {
       offerPrice: Number(offerPrice),
       category,
       image,
+      brand,
+      model,
+      color,
+      size: Number(size),
       date: Date.now(),
     });
 

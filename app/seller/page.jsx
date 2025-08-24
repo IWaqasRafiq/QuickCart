@@ -13,9 +13,13 @@ const AddProduct = () => {
   const [files, setFiles] = useState([]);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [category, setCategory] = useState('Earphone');
+  const [category, setCategory] = useState('Kurta Pajama');
   const [price, setPrice] = useState('');
   const [offerPrice, setOfferPrice] = useState('');
+  const [brand, setBrand] = useState('');
+  const [color, setColor] = useState('');
+  const [size, setSize] = useState('');
+  const [model, setModel] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,6 +31,10 @@ const AddProduct = () => {
     formData.append('category', category);
     formData.append('price', price);
     formData.append('offerPrice', offerPrice);
+    formData.append('brand', brand);
+    formData.append('color', color);
+    formData.append('size', size);
+    formData.append('model', model);
 
     for (let i = 0; i < files.length; i++) {
       formData.append('image', files[i]);
@@ -46,9 +54,13 @@ const AddProduct = () => {
         setFiles([]);
         setName('');
         setDescription('');
-        setCategory('Earphone');
+        setCategory('Kurta Pajama');
         setPrice('');
         setOfferPrice('');
+        setBrand('');
+        setColor('');
+        setSize('');
+        setModel('');
       } else {
         toast.error(data.message)
       }
@@ -130,13 +142,13 @@ const AddProduct = () => {
               onChange={(e) => setCategory(e.target.value)}
               defaultValue={category}
             >
-              <option value="Earphone">Kurta</option>
-              <option value="Headphone">Lehnga</option>
-              <option value="Watch">Peshwas</option>
-              <option value="Smartphone">Angrakha</option>
-              <option value="Laptop">Kaftan</option>
-              <option value="Camera">Peplum</option>
-              <option value="Accessories">Sari</option>
+              <option value="Kurta Pajama">Kurta Pajama</option>
+              <option value="Lehnga">Lehnga</option>
+              <option value="Peshwas">Peshwas</option>
+              <option value="Angrakha">Angrakha</option>
+              <option value="Kaftan">Kaftan</option>
+              <option value="Peplum">Peplum</option>
+              <option value="Sari">Sari</option>
             </select>
           </div>
           <div className="flex flex-col gap-1 w-32">
@@ -164,6 +176,61 @@ const AddProduct = () => {
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               onChange={(e) => setOfferPrice(e.target.value)}
               value={offerPrice}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-32">
+            <label className="text-base font-medium" htmlFor="brand">
+              Brand
+            </label>
+            <input
+              id="brand"
+              type="text"
+              placeholder="Type here"
+              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+              onChange={(e) => setBrand(e.target.value)}
+              value={brand}
+              required
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-32">
+            <label className="text-base font-medium" htmlFor="model">
+              Model
+            </label>
+            <input
+              id="model"
+              type="text"
+              placeholder="Type here"
+              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+              onChange={(e) => setModel(e.target.value)}
+              value={model}
+            />
+          </div>
+          <div className="flex flex-col gap-1 w-32">
+            <label className="text-base font-medium" htmlFor="color">
+              Color
+            </label>
+            <input
+              id="color"
+              type="text"
+              placeholder="Type here"
+              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+              onChange={(e) => setColor(e.target.value)}
+              value={color}
+            />
+          </div>
+
+          <div className="flex flex-col gap-1 w-32">
+            <label className="text-base font-medium" htmlFor="size">
+              Size
+            </label>
+            <input
+              id="size"
+              type="number"
+              placeholder="0"
+              className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+              onChange={(e) => setSize(e.target.value)}
+              value={size}
               required
             />
           </div>
