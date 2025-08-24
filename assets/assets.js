@@ -19,6 +19,7 @@ import arrow_icon_white from "./arrow_icon_white.svg";
 import heart_icon from "./heart_icon.svg";
 import star_icon from "./star_icon.svg";
 import redirect_icon from "./redirect_icon.svg";
+import delete_icon from "./delete_icon.png";
 import star_dull_icon from "./star_dull_icon.svg";
 import upload_area from "./upload_area.png";
 import checkmark from "./checkmark.png";
@@ -40,6 +41,7 @@ export const assets = {
   SliderImage1,
   SliderImage2,
   SliderImage3,
+  delete_icon,
   logo,
   search_icon,
   user_icon,

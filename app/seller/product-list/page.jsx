@@ -17,7 +17,7 @@ const ProductList = () => {
 
   const fetchSellerProduct = async () => {
     try {
-      const token = getToken();
+      const token = await getToken();
       const { data } = await axios.get('/api/product/seller-list', {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -35,6 +35,26 @@ const ProductList = () => {
     }
 
   }
+
+  const deleteProduct = async (id) => {
+    try {
+      const token = await getToken();
+      const { data } = await axios.delete(`/api/product/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (data.success) {
+        toast.success(data.message);
+        setProducts(products.filter((product) => product._id !== id));
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
 
   useEffect(() => {
     if (user) {
@@ -57,6 +77,7 @@ const ProductList = () => {
                   Price
                 </th>
                 <th className="px-4 py-3 font-medium truncate max-sm:hidden">Action</th>
+                <th className="px-4 py-3 font-medium truncate max-sm:hidden">Delete</th>
               </tr>
             </thead>
             <tbody className="text-sm text-gray-500">
@@ -85,6 +106,16 @@ const ProductList = () => {
                         className="h-3.5"
                         src={assets.redirect_icon}
                         alt="redirect_icon"
+                      />
+                    </button>
+                  </td>
+                  <td className="px-4 py-3 max-sm:hidden">
+                    <button onClick={() => deleteProduct(product._id)} className="flex items-center gap-1 px-1.5 md:px-3.5 py-2 bg-orange-600 text-white rounded-md">
+                      <span className="hidden md:block">Delete</span>
+                      <Image
+                        className="w-6"
+                        src={assets.delete_icon}
+                        alt="delete_icon"
                       />
                     </button>
                   </td>
