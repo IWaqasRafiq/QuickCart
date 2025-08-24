@@ -5,7 +5,6 @@ import Link from "next/link"
 import { useAppContext } from "@/context/AppContext";
 import Image from "next/image";
 import { useClerk, UserButton } from "@clerk/nextjs";
-import SearchBar from "./SearchBar";
 
 const Navbar = () => {
 
@@ -37,8 +36,6 @@ const Navbar = () => {
         {isSeller && <button onClick={() => router.push('/seller')} className="text-xs border px-4 py-1.5 rounded-full">Dashboard</button>}
 
       </div>
-
-        <SearchBar className="max-w-md"></SearchBar>
       <ul className="hidden md:flex items-center gap-4 ">
         {user
           ? <>
